@@ -1,62 +1,61 @@
 # This is a sample Python script.
 # Press Umschalt+F10 to execute it or replace it with your code.
+import math
+import random
+
 
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 # ---------------------Aufgabe 1 ------------------------------------
 def compute_r2d2_population(steps: int) -> tuple[int, int, int]:
-    """
-        Computes the r2d2 population for the given step amount
-    :param steps: amount of steps to compute the population (e.g.: 5)
-    :return: tuple of childs adults and old r2d2
-    """
-    return (0, 0, 0)
+    step = 0
+    young = 10
+    middle = 10
+    old = 10
+
+    while step < steps:
+        to_middle = math.floor(young / 2)
+        to_old = math.floor(middle / 3)
+        to_young = middle * 4 + old * 2
+
+        young = to_young
+        middle = to_middle
+        old = to_old
+
+        step += 1
+
+    return young, middle, old
 
 
 # ---------------------Aufgabe 2 Streichholz------------------------------
 # IMPLEMENT YOUR SOLUTION FOR THE STEICHHOLZSPIEL HERE
-def streich_holz_spiel():
-    text = "Geben sie an wie viele Streichhölzer sie nehmen, eine Zahl von 1 bis 6"
-    streichhölzer = 31
-    round_1 = 2
+def matches_game():
+    matches = 31
 
-    print("Spieler A nimmt", round_1, "Streichhölzer")
-    streichhölzer = streichhölzer - round_1
-    print("Es verbleiben:", streichhölzer, "Streichölzer")
-
-    round_2 = int(input(text))
-    streichhölzer = streichhölzer - round_2
-    print("Es verbleiben:", streichhölzer, "Streichhölzer")
-
-    seven = 7
-    rounds = 3
-    round_4 = 0
-
-    while rounds <= 6:
-        if rounds == 1:
-            round_3 = seven - round_2
-            print("Spieler A nimmt", round_3, "Streichhölzer")
-            streichhölzer = streichhölzer - round_3
-            print("Es verbleiben:", streichhölzer, "Streichhölzer")
-
-        elif rounds == 2:
-            round_4 = int(input(text))
-            streichhölzer = streichhölzer - round_4
-            print("Es verbleiben:", streichhölzer, "Streichhölzer")
-
-        elif rounds == 3:
-            round_5 = seven - round_4
-            print("Spieler A nimmt", round_5, "Streichhölzer")
-            streichhölzer = streichhölzer - round_5
-            print("Es verbleiben:", streichhölzer, "Streichhölzer")
-
+    while matches > 1:
+        if matches % 7 == 0:
+            computer_turn = random.randint(1, 6)
         else:
-            round_6 = int(input(text))
-            streichhölzer = streichhölzer - round_6
-            print("Es verbleiben:", streichhölzer, "Streichhölzer")
+            computer_turn = (matches % 7) - 1
+        if computer_turn == 0:
+            computer_turn = 1
 
-        rounds = rounds + 1
+        print("Spieler A nimmt", computer_turn, "Streichhölzer.")
+        matches -= computer_turn
+        print("Es verbleiben:", matches, "Streichhölzer.")
 
-    print("Es verbleiben:", streichhölzer, "Streichhölzer")
+        if matches == 1:
+            print("Spieler B (Sie) müssen das letzte Streichholz nehmen und haben daher verloren.")
+            break
+
+        user_turn = int(input("Geben Sie an, wie viele Streichhölzer Sie nehmen möchten (1 bis 6): "))
+        while user_turn < 1 or user_turn > 6 or user_turn > matches:
+            user_turn = int(input(
+                "Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und 6 und stellen Sie sicher, dass sie nicht größer ist als die verbleibende Anzahl von Streichhölzern: "))
+
+        matches -= user_turn
+        print("Es verbleiben:", matches, "Streichhölzer.")
+
+    print("Spiel beendet.")
 
 
 # ---------------------Aufgabe 3 Heron ------------------------------------
@@ -90,7 +89,7 @@ if __name__ == '__main__':
     # print (compute_r2d2_population(5))
 
     # Aufgabe 2
-    print(streich_holz_spiel())
+    print(matches_game())
 
     # Aufgabe 3
     # print(f"Die Wurzel für die Fläche 25 und Grenze 0.01 nach Heron ist: {heron_verfahren(25, 0.01)}")
